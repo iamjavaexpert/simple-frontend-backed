@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: simple-frontend-backend # The name of the Spring application.
+  datasource:
+    # URL for connecting to the database.
+    # The value will be taken from the 'DATABASE_URL' environment variable,
+    # and if not present, defaults to the PostgreSQL database running on localhost at port 5432 with the 'products' database.
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/products}
+    # Database username. If 'DATABASE_USERNAME' is not provided, it defaults to 'postgres'.
+    username: ${DATABASE_USERNAME:postgres}
+    # Database password. If 'DATABASE_PASSWORD' is not provided, it defaults to 'Sql@4321'.
+    password: ${DATABASE_PASSWORD:postgres}
+  flyway:
+    enabled: true # Enables Flyway migrations for the database. Flyway will automatically apply database migrations at application startup.

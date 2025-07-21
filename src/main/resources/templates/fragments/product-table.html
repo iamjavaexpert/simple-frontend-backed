@@ -1,0 +1,144 @@
+<div id="products-table" th:fragment="products-table">
+    <sl-card class="products-table-card">
+        <div class="table-container">
+            <table class="products-table">
+                <thead>
+                <tr>
+                    <th>
+                        <a href="#"
+                           th:attr="hx-get=@{/products/table(sort='title', direction=${sort == 'title' and direction == 'asc' ? 'desc' : 'asc'})}"
+                           hx-target="#products-table"
+                           hx-swap="outerHTML"
+                           hx-push-url="false"
+                           style="display: flex; align-items: center; gap: 0.25rem; text-decoration: none; color: black;">
+
+                            Product
+
+                            <!-- If this column is actively sorted, show ascending or descending arrow -->
+                            <sl-icon th:if="${sort == 'title'}"
+                                     th:attr="name=${direction == 'asc' ? 'arrow-up' : 'arrow-down'}"></sl-icon>
+
+                            <!-- Otherwise, show default neutral sort icon -->
+                            <sl-icon th:if="${sort != 'title'}" name="arrow-up-down"></sl-icon>
+                        </a>
+                    </th>
+                    <th>
+                        <a href="#"
+                           th:attr="hx-get=@{/products/table(sort='vendor', direction=${sort == 'vendor' and direction == 'asc' ? 'desc' : 'asc'})}"
+                           hx-target="#products-table"
+                           hx-swap="outerHTML"
+                           hx-push-url="false"
+                           style="text-decoration: none;
+                        color: black;"
+                        >
+                            Vendor
+                            <sl-icon th:if="${sort == 'vendor'}"
+                                     th:attr="name=${direction == 'asc' ? 'arrow-up' : 'arrow-down'}"></sl-icon>
+                        </a>
+                    </th>
+                    <th>
+                        <a href="#"
+                           th:attr="hx-get=@{/products/table(sort='type', direction=${sort == 'type' and direction == 'asc' ? 'desc' : 'asc'})}"
+                           hx-target="#products-table"
+                           hx-swap="outerHTML"
+                           hx-push-url="false"
+                           style="text-decoration: none;
+                        color: black;">
+                            Type
+                            <sl-icon th:if="${sort == 'type'}"
+                                     th:attr="name=${direction == 'asc' ? 'arrow-up' : 'arrow-down'}"></sl-icon>
+                        </a>
+                    </th>
+                    <th>
+                        <a href="#"
+                           th:attr="hx-get=@{/products/table(sort='updated_at', direction=${sort == 'updated_at' and direction == 'asc' ? 'desc' : 'asc'})}"
+                           hx-target="#products-table"
+                           hx-swap="outerHTML"
+                           hx-push-url="false"
+                           style="text-decoration: none;
+                        color: black;">
+                            Last Updated
+                            <sl-icon th:if="${sort == 'updated_at'}"
+                                     th:attr="name=${direction == 'asc' ? 'arrow-up' : 'arrow-down'}"></sl-icon>
+                        </a>
+                    </th>
+                    <th>Variants</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="product : ${products}">
+                    <td>
+                        <sl-details class="product-details">
+                            <div slot="summary" th:text="${product.title}"></div>
+                            <div class="details-content">
+                                <p><strong>ID:</strong> <span th:text="${product.id}"></span></p>
+                                <p><strong>Created:</strong> <span th:text="${product.createdAt}"></span></p>
+                            </div>
+                        </sl-details>
+                    </td>
+                    <td th:text="${product.vendor}"></td>
+                    <td th:text="${product.type}"></td>
+                    <td th:text="${product.updatedAt}"></td>
+                    <td>
+                        <sl-details class="variants-details">
+                            <div slot="summary">
+                                <sl-badge variant="neutral"
+                                          th:text="${product.variants.size() + ' variants'}">
+                                </sl-badge>
+                            </div>
+                            <div class="variants-grid">
+                                <sl-card th:each="variant : ${product.variants}" class="variant-card">
+                                    <strong th:text="${variant.title}"></strong>
+                                    <div class="variant-info">
+                                        <p>
+                                            <sl-format-number
+                                                    th:value="${variant.price}"
+                                                    type="currency"
+                                                    currency="USD">
+                                            </sl-format-number>
+                                        </p>
+                                        <p class="sku" th:text="${'SKU: ' + variant.sku}"></p>
+                                        <div class="options">
+                                            <sl-badge th:if="${variant.option1}" variant="neutral"
+                                                      th:text="${variant.option1}"></sl-badge>
+                                            <sl-badge th:if="${variant.option2}" variant="neutral"
+                                                      th:text="${variant.option2}"></sl-badge>
+                                        </div>
+                                        <sl-badge
+                                                th:variant="${variant.available ? 'success' : 'danger'}"
+                                                th:text="${variant.available ? 'In Stock' : 'Out of Stock'}">
+                                        </sl-badge>
+                                    </div>
+                                </sl-card>
+                            </div>
+                        </sl-details>
+                    </td>
+                    <td class="action">
+                        <a th:attr="hx-get=@{'/products/edit/' + ${product.id} }"
+                           hx-target="#mainContent"
+                           hx-swap="innerHTML"
+                           hx-push-url="false"
+                           href="javascript:void(0);">
+                            <sl-button size="small" variant="primary" type="button">
+                                <sl-icon slot="prefix" name="pencil"></sl-icon>
+<!--                                Edit-->
+                            </sl-button>
+                        </a>
+
+                        <a th:attr="hx-delete=@{'/products/' + ${product.id}}"
+                           hx-target="closest tr"
+                           hx-swap="outerHTML"
+                           hx-confirm="Are you sure you want to delete this product?"
+                           href="javascript:void(0);">
+                            <sl-button size="small" variant="danger" type="button">
+                                <sl-icon slot="prefix" name="trash"></sl-icon>
+                            </sl-button>
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </sl-card>
+</div>

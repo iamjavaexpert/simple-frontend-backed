@@ -1,0 +1,103 @@
+<!-- fragments/edit-product-form.html -->
+<div id="mainContent" th:fragment="edit-product-form" class="products-container">
+    <sl-card class="form-card">
+        <div slot="header">
+            <h2>Edit Product</h2>
+        </div>
+
+        <form id="editProductForm"
+              th:action="@{/products/{id}(id=${product.id})}"
+              method="post"
+              th:attr="hx-put=@{/products/{id}(id=${product.id})}"
+              hx-target="#mainContent"
+              hx-swap="outerHTML"
+              hx-indicator="#edit-spinner"
+        >
+
+            <!-- Product Fields -->
+            <div class="form-grid">
+                <sl-input name="title" label="Product Title" th:value="${product.title}" required></sl-input>
+                <sl-input name="vendor" label="Vendor" th:value="${product.vendor}" required></sl-input>
+                <sl-input name="type" label="Product Type" th:value="${product.type}" required></sl-input>
+            </div>
+
+            <sl-divider></sl-divider>
+
+            <!-- Variants Section -->
+            <div class="variants-header">
+                <h3>Variants</h3>
+                <sl-button type="button" variant="success" size="medium" pill onclick="addVariant()">
+                    <sl-icon slot="prefix" name="plus-circle"></sl-icon>
+                    Add Variant
+                </sl-button>
+            </div>
+
+            <div id="variants-list">
+                <div th:each="variant, stat : ${product.variants}" class="variant-form" th:attr="data-variant-index=${stat.index}">
+                    <sl-card class="variant-card">
+                        <div class="variant-header">
+                            <h4 th:text="'Variant #' + (${stat.index + 1})"></h4>
+                            <sl-button type="button"
+                                       variant="danger"
+                                       size="medium"
+                                       onclick="removeVariant(this)"
+                                       class="remove-variant-btn">
+                                <sl-icon name="trash"></sl-icon>
+                            </sl-button>
+                        </div>
+
+                        <div class="variant-form-grid">
+                            <sl-visually-hidden>
+                            <sl-input
+                                   th:name="${'variants[' + stat.index + '].id'}"
+                                      th:value="${variant.id}" > </sl-input>
+                            </sl-visually-hidden>
+
+
+                            <sl-input th:name="'variants[' + ${stat.index} + '].title'"
+                                      label="Variant Title"
+                                      th:value="${variant.title}" required></sl-input>
+
+                            <sl-input th:name="'variants[' + ${stat.index} + '].sku'"
+                                      label="SKU"
+                                      th:value="${variant.sku}" required></sl-input>
+
+                            <sl-input th:name="'variants[' + ${stat.index} + '].price'"
+                                      label="Price"
+                                      type="number"
+                                      min="0"
+                                      step="0.01"
+                                      th:value="${variant.price}" required></sl-input>
+
+                            <sl-input th:name="'variants[' + ${stat.index} + '].option1'"
+                                      label="Option 1"
+                                      th:value="${variant.option1}"></sl-input>
+
+                            <sl-input th:name="'variants[' + ${stat.index} + '].option2'"
+                                      label="Option 2"
+                                      th:value="${variant.option2}"></sl-input>
+
+                            <div class="switch-box">
+                                <label>Available</label>
+                                <sl-switch th:name="'variants[' + ${stat.index} + '].available'"
+                                           label="Available"
+                                           th:checked="${variant.available}"></sl-switch>
+                            </div>
+                        </div>
+                    </sl-card>
+                </div>
+            </div>
+
+            <!-- Submit -->
+            <div class="form-actions">
+
+                <sl-button type="submit" variant="primary" size="medium" pill>
+                    <sl-icon slot="prefix" name="check-circle"></sl-icon>
+                    Update
+                </sl-button>
+
+            </div>
+        </form>
+    </sl-card>
+
+</div>

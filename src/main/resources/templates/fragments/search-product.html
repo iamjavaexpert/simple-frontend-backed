@@ -1,0 +1,32 @@
+<!-- fragments/product-search.html -->
+<div id="mainContent" th:fragment="search-product">
+
+    <div class="products-container">
+        <sl-card>
+            <div class="refresh-header">
+                <h2>Search Product</h2>
+                <div class="refresh-controls">
+                    <sl-input
+                            id="searchInput"
+                            name="title"
+                            placeholder="Enter product title"
+                            debounce="500"
+                            hx-get="/product/search/table"
+                            hx-target="#products-table"
+                            hx-trigger="keyup changed delay:300ms"
+                            hx-params="*"
+                            clearable>
+                        <sl-icon slot="prefix" name="search"></sl-icon>
+                    </sl-input>
+                    <sl-spinner id="spinner" class="htmx-indicator spinner-hidden"></sl-spinner>
+                </div>
+            </div>
+        </sl-card>
+
+        <div id="products-table" class="search-results-container" >
+            <div th:replace="fragments/product-table :: products-table"></div>
+        </div>
+    </div>
+
+
+</div>

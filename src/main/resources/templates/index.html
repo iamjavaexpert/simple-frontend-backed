@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Product Dashboard</title>
+
+    <!-- Shoelace UI -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.19.1/cdn/themes/light.css" />
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.19.1/cdn/shoelace-autoloader.js"></script>
+
+    <!-- HTMX -->
+    <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+
+    <!-- Web Awesome Design Tokens -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@webawesome/core@3.0.0-beta.3/dist/core.min.css" />
+    <!-- Custom Styling -->
+    <link rel="stylesheet" href="/css/product.css" />
+    <script src="/js/dynamicVariants.js"></script>
+
+
+</head>
+<body>
+
+<header>
+    <h3>🛍️ Product Dashboard</h3>
+    <nav>
+
+<div style="display: flex;gap: 10px">
+
+    <sl-button variant="primary"
+               hx-get="/products"
+               hx-target="#mainContent"
+               hx-swap="innerHTML"
+               pill>
+        Products
+    </sl-button>
+
+
+
+    <sl-button variant="success"
+               hx-get="/products/search"
+               hx-target="#mainContent"
+               hx-swap="innerHTML"
+               pill>
+        Search
+    </sl-button>
+</div>
+
+    </nav>
+</header>
+
+<main>
+    <div id="mainContent"
+         hx-get="/products"
+         hx-trigger="load"
+         hx-swap="innerHTML">
+        <!-- HTMX content injected here -->
+    </div>
+
+</main>
+
+<footer class="footer">
+    &copy; 2025 Product Management UI • Powered by Shoelace + HTMX + Web Awesome
+</footer>
+
+</body>
+</html>

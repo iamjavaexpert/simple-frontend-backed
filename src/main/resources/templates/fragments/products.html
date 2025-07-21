@@ -1,0 +1,112 @@
+
+<div id="mainContent" th:fragment="products">
+    <div class="products-container">
+        <!-- Refresh Card -->
+        <sl-card>
+            <div class="refresh-header">
+                <h2>Product List</h2>
+                <div class="refresh-controls">
+                    <sl-button
+                            variant="primary"
+                            hx-get="/products/refresh"
+                            hx-target="#products-table"
+                            hx-swap="outerHTML"
+                            hx-indicator="#spinner"
+                            pill
+                    >
+                        <sl-icon slot="prefix" name="arrow-clockwise" ></sl-icon>
+                        Refresh
+                    </sl-button>
+                    <sl-spinner id="spinner" class="htmx-indicator spinner-hidden"></sl-spinner>
+                </div>
+            </div>
+        </sl-card>
+
+        <!-- Product Table -->
+        <div id="products-table" th:replace="fragments/product-table :: products-table"></div>
+
+        <!-- Form Card -->
+        <sl-card style="margin-top: 50px">
+            <div slot="header">
+                <h2>Add New Product</h2>
+            </div>
+
+            <form
+                    id="productForm"
+                    class="product-form"
+                    hx-post="/product"
+                    hx-target="#products-table"
+                    hx-swap="outerHTML"
+                    hx-indicator="#form-spinner"
+                    hx-on::after-request="handleFormResponse(event)"
+                   >
+                <!-- Form Fields -->
+                <div class="form-fields">
+                    <sl-input name="title" label="Product Title" required></sl-input>
+                    <sl-input name="vendor" label="Vendor" required></sl-input>
+                    <sl-input name="type" label="Product Type" required></sl-input>
+                </div>
+
+                <sl-divider class="form-divider"></sl-divider>
+
+                <!-- Variants -->
+                <div id="variants-container">
+                    <div class="variants-header">
+                        <h3>Variants</h3>
+                        <sl-button
+                                type="button"
+                                variant="success"
+                                size="medium"
+                                onclick="addVariant()"
+                                pill
+                        >
+                            <sl-icon slot="prefix" name="plus-circle"></sl-icon>
+                            Add Variant
+                        </sl-button>
+                    </div>
+
+                    <div id="variants-list" class="variants-list">
+                        <div class="variant-form" data-variant-index="0">
+                            <sl-card class="variant-card">
+                                <div class="variant-title-row">
+                                    <h4>Variant #1</h4>
+                                    <sl-button
+                                            type="button"
+                                            variant="danger"
+                                            size="medium"
+                                            onclick="removeVariant(this)"
+
+                                    >
+                                        <sl-icon name="trash" style="font-size: medium"></sl-icon>
+                                    </sl-button>
+                                </div>
+
+                                <div class="variant-grid">
+                                    <sl-input name="variants[0].title" label="Variant Title" required></sl-input>
+                                    <sl-input name="variants[0].sku" label="SKU" required></sl-input>
+                                    <sl-input name="variants[0].price" label="Price" type="number" min="0" step="0.01" required></sl-input>
+                                    <sl-input name="variants[0].option1" label="Option 1"></sl-input>
+                                    <sl-input name="variants[0].option2" label="Option 2"></sl-input>
+                                    <div>
+                                        <label class="switch-label">Available</label>
+                                        <sl-switch name="variants[0].available" checked></sl-switch>
+                                    </div>
+                                </div>
+                            </sl-card>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit -->
+                <div class="submit-row">
+                    <sl-button type="submit" variant="primary" size="medium" pill>
+                        <sl-icon slot="prefix" name="check-circle"></sl-icon>
+                        Submit
+                    </sl-button>
+                </div>
+            </form>
+        </sl-card>
+    </div>
+
+
+</div>
