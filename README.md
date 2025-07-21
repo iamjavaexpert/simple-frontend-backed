@@ -81,10 +81,5 @@ A robust web application for managing products, leveraging modern technologies a
         flyway.enabled: true
       ```
 
-3. **Start the Application**
-   ```bash
-   ./mvnw spring-boot:run
-   ```
-
-4. **Access the Application**
-    - Open [http://localhost:8080/test](http://localhost:8080/test) to view products.
+3. **Access the Application**
+    - Open [http://localhost:8080](http://localhost:8080) to view products.
