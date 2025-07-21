@@ -32,14 +32,6 @@ A robust web application for managing products, leveraging modern technologies a
 ### Database
 - **Postgres**: Relational database.
 
-## API Endpoints
-### ProductController
-| HTTP Method | Endpoint        | Description                  |
-|-------------|-----------------|------------------------------|
-| GET         | `/test`         | Displays a list of products. |
-| GET         | `/test/table`   | Returns a table fragment.    |
-| POST        | `/test/product` | Adds a new product.          |
-
 ## Scheduled Tasks
 - **Product Fetching**:
     - Endpoint: `https://famme.no/products.json`
